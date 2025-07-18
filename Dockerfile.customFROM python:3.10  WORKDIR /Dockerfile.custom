@@ -1,0 +1,22 @@
+FROM python:3.10
+
+WORKDIR /app
+
+# Installer uv
+RUN pip install uv
+
+# Copier les fichiers de dépendances
+COPY pyproject.toml uv.lock ./
+
+# Installer les dépendances
+RUN uv sync
+
+# Installer Flask pour le wrapper HTTP
+RUN pip install flask flask-cors
+
+# Copier tout
+COPY . .
+
+EXPOSE 8003
+
+CMD ["python", "app.py"]
