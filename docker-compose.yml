@@ -1,25 +1,21 @@
-version: '3.8'
-
+version: "3.3"
 services:
-  mcp-google-sheets:
-    build: .
+  app:
     container_name: mcp-google-sheets
-    restart: unless-stopped
-    
-    environment:
-      - SERVICE_ACCOUNT_PATH=/app/config/service-account.json
-      - DRIVE_FOLDER_ID=${DRIVE_FOLDER_ID}
-      - FASTMCP_PORT=8004
-      - FASTMCP_HOST=0.0.0.0
-    
-    volumes:
+    image: mcp-google-sheets
+    restart: always
+    build:
+      context: .
+    volumes: 
+      - ./src:/app/src
       - ./config:/app/config:ro
-    
     ports:
-      - "8004:8004"
-    
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8004/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      - 172.17.0.1:8004:8004
+    environment:
+      DOMAIN: https://mcp-google-sheets-u51229.vm.elestio.app
+      SERVICE_ACCOUNT_PATH: /app/config/service-account.json
+      DRIVE_FOLDER_ID: 1mdWGHbUe0J7LzOth-b-NFPNg69P_i8ML
+      FASTMCP_PORT: 8004
+      FASTMCP_HOST: 0.0.0.0
+    env_file:
+      - .env
