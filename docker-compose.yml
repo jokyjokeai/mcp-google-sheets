@@ -9,17 +9,17 @@ services:
     environment:
       - SERVICE_ACCOUNT_PATH=/app/config/service-account.json
       - DRIVE_FOLDER_ID=${DRIVE_FOLDER_ID}
-      - FASTMCP_PORT=8000
+      - FASTMCP_PORT=8004
       - FASTMCP_HOST=0.0.0.0
     
     volumes:
       - ./config:/app/config:ro
     
     ports:
-      - "8000:8000"
+      - "8004:8004"
     
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8004/health"]
       interval: 30s
       timeout: 10s
       retries: 3
